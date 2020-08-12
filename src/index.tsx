@@ -9,13 +9,14 @@ import '@contentful/forma-36-fcss/dist/styles.css';
 
 import Config from './config';
 import './index.css';
-import { Paragraph } from '@contentful/forma-36-react-components';
 import Translations from './translations';
 
 // You can render different components for each location in the Contentful web app.
 // Learn more about all app locations here: https://ctfl.io/app-locations
 init((sdk) => {
   const root = document.getElementById('root');
+  console.log("SDK => ", sdk)
+
   if (sdk.location.is(locations.LOCATION_APP_CONFIG)) {
     render(<Config sdk={sdk as AppExtensionSDK} />, root);
   } else {

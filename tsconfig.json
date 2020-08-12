@@ -7,7 +7,7 @@
     "rootDir": "./src",
     "experimentalDecorators": true,
     "esModuleInterop": true,
-    "lib": ["dom", "es2015"],
+    "lib": ["dom", "es2015", "es2018.promise"],
     "resolveJsonModule": true
   }
 }
