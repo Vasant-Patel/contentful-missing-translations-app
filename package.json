@@ -1,5 +1,5 @@
 {
-  "homepage": "https://vasant-patel.github.io/contentful-missing-translations-app/",
+  "homepage": "https://vasant-patel.github.io/contentful-missing-translations-app",
   "name": "hello-world-react-example",
   "version": "0.1.0",
   "private": true,
@@ -7,6 +7,7 @@
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html",
     "format": "prettier --config ./.prettierrc --write src/**/*.tsx",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
