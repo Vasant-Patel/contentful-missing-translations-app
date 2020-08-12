@@ -11,8 +11,6 @@ import Config from './config';
 import './index.css';
 import Translations from './translations';
 
-// You can render different components for each location in the Contentful web app.
-// Learn more about all app locations here: https://ctfl.io/app-locations
 init((sdk) => {
   const root = document.getElementById('root');
   console.log("SDK => ", sdk)

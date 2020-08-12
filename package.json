@@ -7,7 +7,6 @@
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html",
     "format": "prettier --config ./.prettierrc --write src/**/*.tsx",
-    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {

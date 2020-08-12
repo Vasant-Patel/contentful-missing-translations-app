@@ -12,8 +12,12 @@ import {
   Note,
   SkeletonRow,
   EmptyState,
+  TableRow,
+  Table,
+  TableCell,
 } from '@contentful/forma-36-react-components';
 import { toLocalisedEntry, LocalisedEntry, itemLink } from './utils';
+import { icons } from './icons';
 
 export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
   const [missingEntries, setMissingEntries] = useState<LocalisedEntry[]>([]);
@@ -114,7 +118,14 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
             </TextLink>
             <List>
               {entry.values?.map((v, idx) => (
-                <ListItem key={idx}> {v || ''} </ListItem>
+                <TableRow>
+                  <TableCell >
+                    <img src={icons[idx]} style={{ width: 35, height: 35 }} />
+                  </TableCell>
+                  <TableCell >
+                    {v || ''}
+                  </TableCell>
+                </TableRow>
               ))}
             </List>
           </div>
