@@ -46,7 +46,7 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
       const client = contentful.createClient({
         space: sdk.ids.space,
         accessToken: cdaReadOnlyToken,
-        environment: 'master',
+        environment: sdk.ids.environment,
       });
 
       client
