@@ -1,7 +1,8 @@
 import * as R from 'ramda';
 const tags = ['[EN]', '[FI]', '[SV]'];
 
-export const EntryLink = "https://app.contentful.com/spaces/SPACE_ID/entries/ENTRY_ID"
+export const EntryLink = "https://app.contentful.com/spaces/SPACE_ID/environments/master/entries/ENTRY_ID"
+
 
 export interface LocalisedEntry {
   item: any;
