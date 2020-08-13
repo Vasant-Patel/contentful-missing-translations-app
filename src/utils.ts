@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 const tags = ['[EN]', '[FI]', '[SV]'];
 
-export const EntryLink = "https://app.contentful.com/spaces/SPACE_ID/environments/master/entries/ENTRY_ID"
+export const EntryLink = "https://app.contentful.com/spaces/SPACE_ID/environments/ENV_ID/entries/ENTRY_ID"
 
 
 export interface LocalisedEntry {
@@ -29,22 +29,20 @@ export const toLocalisedEntry = (item: any): LocalisedEntry => {
 };
 
 
-export const itemLink = (entry: LocalisedEntry): string | undefined => {
+export const itemLink = (entry: LocalisedEntry, envId: string, spaceId: string): string | undefined => {
 
   if (!entry || !entry.item) {
     return undefined;
   }
 
-  const SPACE_ID = (R.path(['sys', 'space', 'sys', 'id'], entry.item) as unknown) as string;
   const ENTRY_ID = (R.path(['sys', 'id'], entry.item) as unknown) as string;
 
-  if (!SPACE_ID || !ENTRY_ID) {
+  if (!ENTRY_ID) {
     return undefined;
   }
 
-  const data = { ENTRY_ID, SPACE_ID };
-
-  const link =  EntryLink.replace(/SPACE_ID|ENTRY_ID/gi, (match => data[match]));
+  const data = { ENTRY_ID, 'ENV_ID': envId, 'SPACE_ID': spaceId };
+  const link =  EntryLink.replace(/SPACE_ID|ENTRY_ID|ENV_ID/gi, (match => data[match]));
   console.log("ENTRY LINK IS => ", link)
   return link;
 

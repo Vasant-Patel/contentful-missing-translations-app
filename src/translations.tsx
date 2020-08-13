@@ -20,6 +20,7 @@ import { toLocalisedEntry, LocalisedEntry, itemLink } from './utils';
 import { icons } from './icons';
 
 export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
+  console.log("SDK => ", sdk)
   const [missingEntries, setMissingEntries] = useState<LocalisedEntry[]>([]);
   const [error, setError] = useState<string>();
   const [isInitialized, setInitialized] = useState(false);
@@ -95,7 +96,9 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
   }
 
   const onOpenItem = (item: LocalisedEntry) => {
-    window.open(itemLink(item), '_blank');
+    const spaceId = sdk.ids.space;
+    const envId = sdk.ids.environment;
+    window.open(itemLink(item, envId, spaceId), '_blank');
   };
 
   if (isLoading || !isInitialized) {
