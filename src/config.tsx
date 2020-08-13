@@ -12,7 +12,6 @@ export default function Config({ sdk }: { sdk: AppExtensionSDK }) {
   const [token, setToken] = useState('');
 
   const configure = () => {
-    console.log('On configure called returning => ', token);
     return {
       // Parameters to be persisted as the app configuration.
       parameters: token ? { token } : { token: '' },
@@ -20,11 +19,8 @@ export default function Config({ sdk }: { sdk: AppExtensionSDK }) {
   };
 
   const onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log("OnTextChange => ", e)
     const updatedValue = e.target.value;
-    console.log('updated Value => ', updatedValue);
     setToken(updatedValue);
-    console.log('Params after setParams => ', token);
   };
 
   useEffect(() => {
@@ -34,7 +30,6 @@ export default function Config({ sdk }: { sdk: AppExtensionSDK }) {
   useEffect(() => {
     // Ready to display our app (end loading state).
     sdk.app.getParameters().then((parameters) => {
-      console.log('Setting app ready in config screen with params ! => ', parameters);
       const token = (R.propOr('', 'token', parameters || {}) as unknown) as string;
       setToken(token);
       sdk.app.setReady();

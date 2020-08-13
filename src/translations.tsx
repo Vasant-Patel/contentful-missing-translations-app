@@ -7,7 +7,6 @@ import '@contentful/forma-36-fcss/dist/styles.css';
 // Use components from Contentful's design system, Forma 36: https://ctfl.io/f36
 import {
   List,
-  ListItem,
   TextLink,
   Note,
   SkeletonRow,
@@ -20,7 +19,6 @@ import { toLocalisedEntry, LocalisedEntry, itemLink } from './utils';
 import { icons } from './icons';
 
 export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
-  console.log('SDK => ', sdk);
   const [missingEntries, setMissingEntries] = useState<LocalisedEntry[]>([]);
   const [error, setError] = useState<string>();
   const [isInitialized, setInitialized] = useState(false);
@@ -41,7 +39,7 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
       ) as unknown) as string;
 
       if (!cdaReadOnlyToken) {
-        throw 'Please set valid content delivery api readonly token from Apps => Manage Apps => VRMobile missing translations => configure';
+        throw 'Please set valid content delivery api readonly token from Manage Apps => Configure';
       }
 
       const client = contentful.createClient({
@@ -64,7 +62,6 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
         .then((items) => items.map((item) => toLocalisedEntry(item)))
         .then((entries) => entries.filter((entry) => entry.isMissingTranslation))
         .then((entries) => {
-          setLoading(false);
           setMissingEntries(entries);
         })
         .catch((e) => {

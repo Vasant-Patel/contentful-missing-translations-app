@@ -43,6 +43,6 @@ export const itemLink = (
 
   const data: { [key: string]: string } = { ENTRY_ID, ENV_ID: envId, SPACE_ID: spaceId };
   const link = EntryLink.replace(/SPACE_ID|ENTRY_ID|ENV_ID/gi, (match) => data[match]);
-  console.log('ENTRY LINK IS => ', link);
   return link;
 };
+
