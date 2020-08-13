@@ -13,7 +13,7 @@ import Translations from './translations';
 
 init((sdk) => {
   const root = document.getElementById('root');
-  console.log("SDK => ", sdk)
+  console.log('SDK => ', sdk);
 
   if (sdk.location.is(locations.LOCATION_APP_CONFIG)) {
     render(<Config sdk={sdk as AppExtensionSDK} />, root);
@@ -21,4 +21,3 @@ init((sdk) => {
     render(<Translations sdk={sdk as AppExtensionSDK} />, root);
   }
 });
-

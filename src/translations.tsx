@@ -20,7 +20,7 @@ import { toLocalisedEntry, LocalisedEntry, itemLink } from './utils';
 import { icons } from './icons';
 
 export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
-  console.log("SDK => ", sdk)
+  console.log('SDK => ', sdk);
   const [missingEntries, setMissingEntries] = useState<LocalisedEntry[]>([]);
   const [error, setError] = useState<string>();
   const [isInitialized, setInitialized] = useState(false);
@@ -121,13 +121,11 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
             </TextLink>
             <List>
               {entry.values?.map((v, idx) => (
-                <TableRow>
-                  <TableCell >
+                <TableRow key={idx}>
+                  <TableCell>
                     <img src={icons[idx]} style={{ width: 35, height: 35 }} />
                   </TableCell>
-                  <TableCell >
-                    {v || ''}
-                  </TableCell>
+                  <TableCell>{v || ''}</TableCell>
                 </TableRow>
               ))}
             </List>
