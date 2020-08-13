@@ -114,7 +114,7 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
         {missingEntries.map((entry, idx) => (
           <div key={idx}>
             <TextLink onClick={() => onOpenItem(entry)}>
-              <h1>{entry.key || 'UNKNOWN'}</h1>
+              <h2>{entry.key || 'UNKNOWN'}</h2>
             </TextLink>
             <List>
               {entry.values?.map((v, idx) => (
