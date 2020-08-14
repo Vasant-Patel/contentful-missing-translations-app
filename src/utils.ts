@@ -13,14 +13,20 @@ export interface LocalisedEntry {
 
 export const toLocalisedEntry = (item: any): LocalisedEntry => {
   const key = (R.path(['fields', 'id', 'fi'], item) as unknown) as string;
-  const fiValue: string = (R.path(['fields', 'text', 'fi'], item) as unknown) as string;
-  const enValue: string = (R.path(['fields', 'text', 'en'], item) as unknown) as string;
-  const svValue: string = (R.path(['fields', 'text', 'sv'], item) as unknown) as string;
+  const fiValue: string = (R.pathOr('', ['fields', 'text', 'fi'], item) as unknown) as string;
+  const enValue: string = (R.pathOr('', ['fields', 'text', 'en'], item) as unknown) as string;
+  const svValue: string = (R.pathOr('', ['fields', 'text', 'sv'], item) as unknown) as string;
+  const acceptEmpty: boolean = (R.pathOr(
+    false,
+    ['fields', 'acceptEmpty', 'fi'],
+    item
+  ) as unknown) as boolean;
+
   const values = [fiValue, enValue, svValue];
 
   const isMissingTranslation =
     R.isNil(key) ||
-    R.any((v) => R.isNil(v) || R.isEmpty(v), values) ||
+    (acceptEmpty ? false : R.any((v) => R.isNil(v) || R.isEmpty(v), values)) ||
     R.any((v) => R.any((tag) => v.includes(tag), tags), values);
 
   return { item, key, values, isMissingTranslation };
@@ -45,4 +51,3 @@ export const itemLink = (
   const link = EntryLink.replace(/SPACE_ID|ENTRY_ID|ENV_ID/gi, (match) => data[match]);
   return link;
 };
-
