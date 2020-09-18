@@ -9,9 +9,11 @@ export interface LocalisedEntry {
   key?: string;
   values?: string[];
   isMissingTranslation: boolean;
+  parentId?: string;
+  parentName?: string;
 }
 
-export const toLocalisedEntry = (item: any): LocalisedEntry => {
+export const toLocalisedEntry = (item: any, parentId?: string, parentName?: string): LocalisedEntry => {
   const key = (R.path(['fields', 'id', 'fi'], item) as unknown) as string;
   const fiValue: string = (R.pathOr('', ['fields', 'text', 'fi'], item) as unknown) as string;
   const enValue: string = (R.pathOr('', ['fields', 'text', 'en'], item) as unknown) as string;
@@ -29,25 +31,20 @@ export const toLocalisedEntry = (item: any): LocalisedEntry => {
     (acceptEmpty ? false : R.any((v) => R.isNil(v) || R.isEmpty(v), values)) ||
     R.any((v) => R.any((tag) => v.includes(tag), tags), values);
 
-  return { item, key, values, isMissingTranslation };
+  return { item, key, values, isMissingTranslation, parentId, parentName };
 };
 
 export const itemLink = (
-  entry: LocalisedEntry,
+  itemId: string,
   envId: string,
   spaceId: string
 ): string | undefined => {
-  if (!entry || !entry.item) {
+
+  if (!itemId) {
     return undefined;
   }
 
-  const ENTRY_ID = (R.path(['sys', 'id'], entry.item) as unknown) as string;
-
-  if (!ENTRY_ID) {
-    return undefined;
-  }
-
-  const data: { [key: string]: string } = { ENTRY_ID, ENV_ID: envId, SPACE_ID: spaceId };
+  const data: { [key: string]: string } = { ENTRY_ID: itemId, ENV_ID: envId, SPACE_ID: spaceId };
   const link = EntryLink.replace(/SPACE_ID|ENTRY_ID|ENV_ID/gi, (match) => data[match]);
   return link;
 };

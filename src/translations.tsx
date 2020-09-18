@@ -13,7 +13,7 @@ import {
   EmptyState,
   TableRow,
   Table,
-  TableCell,
+  TableCell,, Pill, Tag
 } from '@contentful/forma-36-react-components';
 import { toLocalisedEntry, LocalisedEntry, itemLink } from './utils';
 import { icons } from './icons';
@@ -57,9 +57,19 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
           );
         })
         .then((namespaces) =>
-          R.flatten(namespaces.map((n) => R.path(['fields', 'localizedEntries', 'fi'], n)))
+          namespaces.map((n) => ({
+            parentId: R.path(['sys', 'id'], n) as string,
+            parentName: R.path(['fields', 'id', 'fi'], n) as string,
+            entries: R.path(['fields', 'localizedEntries', 'fi'], n) as any[],
+          }))
         )
-        .then((items) => items.map((item) => toLocalisedEntry(item)))
+        .then((nsItems) =>
+          R.flatten(
+            nsItems.map((nsItem) =>
+              nsItem.entries.map((i) => toLocalisedEntry(i, nsItem.parentId, nsItem.parentName))
+            )
+          )
+        )
         .then((entries) => entries.filter((entry) => entry.isMissingTranslation))
         .then((entries) => {
           setMissingEntries(entries);
@@ -92,10 +102,31 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
     );
   }
 
-  const onOpenItem = (item: LocalisedEntry) => {
+  const openLink = (itemId: string) => {
     const spaceId = sdk.ids.space;
     const envId = sdk.ids.environment;
-    window.open(itemLink(item, envId, spaceId), '_blank');
+
+    if (!itemId) {
+      return undefined;
+    }
+
+    window.open(itemLink(itemId, envId, spaceId), '_blank');
+  };
+
+  const onOpenItem = (entry: LocalisedEntry) => {
+    if (!entry || !entry.item) {
+      return undefined;
+    }
+    const itemId = (R.path(['sys', 'id'], entry.item) as unknown) as string;
+    openLink(itemId);
+  };
+
+  const onOpenParent = (entry: LocalisedEntry) => {
+    if (!entry) {
+      return undefined;
+    }
+    const itemId = (entry.parentId as unknown) as string;
+    openLink(itemId);
   };
 
   if (isLoading || !isInitialized) {
@@ -113,9 +144,13 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
       <div style={{ margin: 20 }}>
         {missingEntries.map((entry, idx) => (
           <div key={idx}>
-            <TextLink onClick={() => onOpenItem(entry)}>
+            <TextLink className="title" onClick={() => onOpenItem(entry)}>
               <h2>{entry.key || 'UNKNOWN'}</h2>
             </TextLink>
+            <TextLink onClick={() => onOpenParent(entry)}>
+              <Tag>{`(Namespace: ${entry.parentName})`}</Tag>
+            </TextLink>
+
             <List>
               {entry.values?.map((v, idx) => (
                 <TableRow key={idx}>
@@ -132,3 +167,5 @@ export default function Translations({ sdk }: { sdk: AppExtensionSDK }) {
     </>
   );
 }
+
+//https://vasant-patel.github.io/contentful-missing-translations-app/
